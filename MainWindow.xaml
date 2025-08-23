@@ -5,11 +5,11 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:MandelbrotViewerDotNet"
 		mc:Ignorable="d"
-		Title="MainWindow" Height="1440" Width="2560">
+		Title="MainWindow" Height="900" Width="1600" KeyDown="InputKeyDown">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition x:Name="ControlColumn" Width="*"/>
-			<ColumnDefinition x:Name="ViewerColumn" Width="8*"/>
+			<ColumnDefinition x:Name="ViewerColumn" Width="6*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition x:Name="ControlBar" Height="*"/>
@@ -29,12 +29,22 @@
 			</Grid.ColumnDefinitions>
 			<Label x:Name="MaxIterationsLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0"/>
 			<Label x:Name="StepsToColorLabel" Content="Steps To Color" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1"/>
-			<!--<Label x:Name="aLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2"/>
-			<Label x:Name="bLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3"/>
-			<Label x:Name="cLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4"/>-->
-			<TextBox x:Name="MaxIterationsTextBox" Text="1000" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Width="80"/>
-			<TextBox x:Name="StepsToColorTextBox" Text="100" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="80"/>
+			<Label x:Name="CameraPositionLabel" Content="Camera Position (X, Y)" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2"/>
+			<Label x:Name="CameraZoomLabel" Content="Camera Zoom" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3"/>
+			<!--<Label x:Name="cLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4"/>-->
+			<TextBox x:Name="MaxIterationsTextBox" Text="1000" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Width="100"/>
+			<TextBox x:Name="StepsToColorTextBox" Text="100" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="100"/>
+			<Grid Grid.Column="1" Grid.Row="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<TextBox x:Name="CameraPositionTextBoxX" Text="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Width="50"/>
+				<TextBox x:Name="CameraPositionTextBoxY" Text="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="50"/>
+			</Grid>
+			<TextBox x:Name="CameraZoomTextBody" Text="100" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Width="100"/>
 		</Grid>
 		<Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" Margin="0"/>
+		<Image x:Name="MainImage" Grid.Column="1" Grid.Row="1" Source="/res/800x600withBorder.bmp"/>
 	</Grid>
 </Window>
