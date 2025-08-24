@@ -1,15 +1,22 @@
 ﻿<Window x:Class="MandelbrotViewerDotNet.MainWindow"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:MandelbrotViewerDotNet"
-		mc:Ignorable="d"
-		Title="MainWindow" Height="900" Width="1600" KeyDown="InputKeyDown">
-	<Grid>
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:MandelbrotViewerDotNet"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	mc:Ignorable="d"
+	Title="Mandelbrot Viewer - Created by Nick &quot;Barcode&quot; Tarvestad - v0.1.1" Height="900" Width="1600" KeyDown="InputKeyDown">
+	<Window.Resources>
+		<local:IntToStringConverter x:Key="IntToStringConverter"/>
+		<local:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+		<sys:Double x:Key="LabelFontSize">14</sys:Double>
+		<sys:Double x:Key="ButtonFontSize">22</sys:Double>
+	</Window.Resources>
+	<Grid Focusable="True">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition x:Name="ControlColumn" Width="*"/>
-			<ColumnDefinition x:Name="ViewerColumn" Width="6*"/>
+			<ColumnDefinition x:Name="ControlColumn" Width="2*"/>
+			<ColumnDefinition x:Name="ViewerColumn" Width="11*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition x:Name="ControlBar" Height="*"/>
@@ -17,34 +24,68 @@
 		</Grid.RowDefinitions>
 		<Grid Grid.Column="0" Grid.Row="1">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="46"/>
 				<RowDefinition Height="36"/>
 				<RowDefinition Height="36"/>
 				<RowDefinition Height="36"/>
 				<RowDefinition Height="36"/>
+				<RowDefinition Height="36"/>
+				<RowDefinition Height="36"/>
+				<RowDefinition Height="*"/>
 				<RowDefinition Height="36"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="2*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Label x:Name="MaxIterationsLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0"/>
-			<Label x:Name="StepsToColorLabel" Content="Steps To Color" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1"/>
-			<Label x:Name="CameraPositionLabel" Content="Camera Position (X, Y)" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2"/>
-			<Label x:Name="CameraZoomLabel" Content="Camera Zoom" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3"/>
-			<!--<Label x:Name="cLabel" Content="Max Iterations" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4"/>-->
-			<TextBox x:Name="MaxIterationsTextBox" Text="1000" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Width="100"/>
-			<TextBox x:Name="StepsToColorTextBox" Text="100" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="100"/>
-			<Grid Grid.Column="1" Grid.Row="2">
+			<Button x:Name="GenerateButton" Content="Generate" FontSize="{StaticResource ButtonFontSize}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Click="GenerateButtonClicked"/>
+			<Label x:Name="MaxIterationsLabel" Content="Max Iterations" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1"/>
+			<Label x:Name="CameraPositionLabel" Content="Camera Position (X, Y)" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2"/>
+			<Label x:Name="CameraZoomLabel" Content="Camera Zoom" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3"/>
+			<Label x:Name="RenderImageSize" Content="Rendered Image Size" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4"/>
+			<TextBox x:Name="MaxIterationsTextBox"
+					 Text="{Binding MandelMaxStep, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+					 FontSize="{StaticResource LabelFontSize}"
+					 HorizontalAlignment="Center"
+					 VerticalAlignment="Center"
+					 Grid.Column="1"
+					 Grid.Row="1"
+					 Width="72"/>
+			<Grid Grid.Column="1" Grid.Row="2" Focusable="True">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<TextBox x:Name="CameraPositionTextBoxX" Text="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Width="50"/>
-				<TextBox x:Name="CameraPositionTextBoxY" Text="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="50"/>
+				<TextBox x:Name="CameraPositionTextBoxX" Text="{Binding CameraPositionX, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Width="36"/>
+				<TextBox x:Name="CameraPositionTextBoxY" Text="{Binding CameraPositionY, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="36"/>
 			</Grid>
-			<TextBox x:Name="CameraZoomTextBody" Text="100" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Width="100"/>
+			<Grid Grid.Column="1" Grid.Row="4" Focusable="True">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<TextBox x:Name="RenderImageSizeTextBoxX" Text="{Binding RenderImageWidth, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Width="36"/>
+				<TextBox x:Name="RenderImageSizeTextBoxY" Text="{Binding RenderImageHeight, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="{StaticResource LabelFontSize}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Width="36"/>
+			</Grid>
+			<TextBox x:Name="CameraZoomTextbox"
+					 Text="{Binding CameraZoom, Converter={StaticResource DoubleToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+					 FontSize="{StaticResource LabelFontSize}"
+					 HorizontalAlignment="Center"
+					 VerticalAlignment="Center"
+					 Grid.Column="1"
+					 Grid.Row="3"
+					 Width="72"
+					 PreviewTextInput="CameraZoomTextbox_PreviewTextInput"
+					 PreviewKeyDown="CameraZoomTextbox_PreviewKeyDown"
+					 />
+			<Button x:Name="SaveImageButton"
+					Content="Save Rendered Image"
+					Grid.Row="8"
+					Grid.ColumnSpan="2"
+					FontSize="{StaticResource ButtonFontSize}"
+					Click="SaveImageButtonClicked"/>
 		</Grid>
-		<Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" Margin="0"/>
-		<Image x:Name="MainImage" Grid.Column="1" Grid.Row="1" Source="/res/800x600withBorder.bmp"/>
+		<Border Grid.Column="2" BorderBrush="Black" BorderThickness="2" Margin="0,42,0,0" Grid.RowSpan="2"/>
+		<Image x:Name="MainImage" Grid.Column="2" Source="/res/800x600withBorder.bmp" Focusable="True" Stretch="Uniform" Margin="0,42,0,0" Grid.RowSpan="2"/>
 	</Grid>
 </Window>
